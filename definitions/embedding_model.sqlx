@@ -1,0 +1,7 @@
+config {
+    type: "operations"
+}
+
+CREATE OR REPLACE MODEL
+  `${dataform.projectConfig.defaultDatabase}.${dataform.projectConfig.defaultSchema}.embedding_model` REMOTE
+WITH CONNECTION `projects/workflows-demo-369108/locations/eu/connections/genai_demo` OPTIONS (ENDPOINT = 'textembedding-gecko@002');

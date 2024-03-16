@@ -1,0 +1,11 @@
+config {
+    type: "operations"
+}
+
+CREATE OR REPLACE VECTOR INDEX arxiv_index
+ON
+  ${ref('arxiv_embeddings')}(ml_generate_embedding_result) OPTIONS(
+    index_type = 'IVF',
+    distance_type = 'COSINE',
+    ivf_options = '{"num_lists":500}'
+)
