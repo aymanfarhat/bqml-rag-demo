@@ -1,0 +1,8 @@
+{
+  "defaultSchema": "startup_ideas_generator",
+  "assertionSchema": "dataform_assertions",
+  "warehouse": "bigquery",
+  "defaultDatabase": "workflows-demo-369108",
+  "defaultLocation": "EU"
+}
+    
