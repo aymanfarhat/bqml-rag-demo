@@ -1,0 +1,17 @@
+config {
+    type: "operations",
+    hasOutput: true,
+}
+
+CREATE OR REPLACE TABLE
+  ${self()} ( 
+    id STRING,
+    title STRING,
+    abstract STRING,
+  );
+LOAD DATA INTO
+  ${self()}
+FROM FILES ( format='JSON',
+    ignore_unknown_values=TRUE,
+    max_bad_records=1000,
+    uris=['gs://genai-projects-ideas-generator/inputs/arxiv-abstracts000000000000.jsonl']);

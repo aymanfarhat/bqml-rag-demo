@@ -1,0 +1,20 @@
+config {
+    type: "table",
+    
+}
+
+SELECT
+  *
+FROM
+  ML.GENERATE_EMBEDDING( MODEL `${dataform.projectConfig.defaultDatabase}.${dataform.projectConfig.defaultSchema}.embedding_model`,
+    (
+    SELECT
+      id,
+      title,
+      abstract AS content
+    FROM
+      ${ref('source')}
+    LIMIT
+      10000 ) )
+WHERE
+  LENGTH(ml_generate_embedding_status) = 0
