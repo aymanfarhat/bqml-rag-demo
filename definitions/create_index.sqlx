@@ -7,5 +7,5 @@ ON
   ${ref('arxiv_embeddings')}(ml_generate_embedding_result) OPTIONS(
     index_type = 'IVF',
     distance_type = 'COSINE',
-    ivf_options = '{"num_lists":500}'
+    ivf_options = '{"num_lists":2500}'
 )
