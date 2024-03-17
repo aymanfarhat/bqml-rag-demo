@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="./output.css" rel="stylesheet">
+        <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    </head>
+    <body class="bg-gray-100 min-h-screen">
+        <div class="container mx-auto py-12 flex flex-col items-center">
+            <h1 class="text-3xl font-bold mb-6">ArchXiv Idea Generator</h1>
+            <h2 class="text-xl font-semibold mb-6">Use research papers to generate ideas for your next project</h2>
+            <div class="w-full max-w-xl bg-white rounded-lg shadow-md p-6" x-data="ideaGen">
+                <form method="GET" @submit.prevent="fetchIdeas">
+                    <div class="flex items-center mb-4"> 
+                        <input type="text" placeholder="Write a general topic..." x-model="topic" :disabled="isLoading"
+                                           class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 flex-grow"> 
+                        <button type="submit" :disabled="isLoading"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+                            <span x-text="isLoading ? 'Thinking...' : 'Generate'"></span>
+                        </button> 
+                    </div> 
+                </form>
+
+                <div>
+                    <ul class="flex border-b border-gray-200">
+                        <template x-for="idea in ideas" :key="idea.title">
+                            <li class="-mb-px mr-1">
+                                <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold" 
+                                   href="#"
+                                   @click="selectedTab = idea.title"
+                                   :class="selectedTab === idea.title ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500 hover:text-gray-800'"
+                                   x-text="idea.title"
+                                   ></a>
+                            </li>
+                        </template>
+                    </ul>
+                
+                    <div class="mt-4">
+                        <template x-for="content in ideas" :key="content.title">
+                            <div x-show="selectedTab === content.title">
+                                <p x-html="content.content" x-show="content.content.length" class="text-gray-700"></p>
+                                <h3>Research Paper</h3>
+                                <a :href="content.arxivPaperUrl" 
+                                   x-text="content.arxivPaperTitle"
+                                   target="_blank" 
+                                   class="text-blue-500 hover:text-blue-800" ></a>
+                                </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script defer>
+            const baseUrl = window.location.origin;
+            const port = window.location.port;
+            const apiUrl = `${baseUrl}/generate`;
+
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('ideaGen', () => ({
+                    selectedTab: 'Idea 0',
+                    ideas: [],
+                    topic: '',
+                    isLoading: false,
+                    fetchIdeas() {
+                        this.isLoading = true;
+                        const fetchUrl = `${apiUrl}?topic=${this.topic}`;
+
+                        fetch(fetchUrl)
+                            .then(response => response.json())
+                            .then(data => {
+                                this.ideas = data;
+                            })
+                            .catch(error => console.error('Error:', error))
+                            .finally(() => {
+                                this.isLoading = false;
+                            });
+                    },
+                }));
+            });
+        </script>
+    </body>
+</html>

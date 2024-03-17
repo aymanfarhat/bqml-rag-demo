@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h2 {
+  @apply text-2xl font-bold;
+  @apply mb-4;
+}
+
+h3 {
+  @apply text-xl font-bold;
+}
+
+li {
+  @apply mb-2;
+}
+
+p {
+  @apply mb-4;
+}
