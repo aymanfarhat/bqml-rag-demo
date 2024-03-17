@@ -1,0 +1,14 @@
+config {
+    type: "table",
+}
+
+SELECT
+  id,
+  title,
+  abstract
+FROM
+  ${ref('source')}
+WHERE
+    CHAR_LENGTH(title) > 10 AND
+    ARRAY_LENGTH(REGEXP_EXTRACT_ALL(abstract, r'\w+')) >= 20
+LIMIT 200000

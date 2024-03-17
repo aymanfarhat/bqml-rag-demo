@@ -1,6 +1,5 @@
 config {
     type: "table",
-    
 }
 
 SELECT
@@ -13,8 +12,7 @@ FROM
       title,
       abstract AS content
     FROM
-      ${ref('source')}
-    LIMIT
-      10000 ) )
+      ${ref('cleanup_data')}
+    ) )
 WHERE
   LENGTH(ml_generate_embedding_status) = 0
